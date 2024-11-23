@@ -32,7 +32,7 @@ export default function TaxTabsPage() {
 
   const renderTab1Content = () => (
     <div>
-      <h2 className="text-xl font-bold mb-2">Annual Income Tax Calculator</h2>
+      <h2 className="text-lg font-bold mb-2">Annual Income Tax Calculator</h2>
       <input
         className="border p-2 mr-2 mb-3 rounded-md"
         placeholder="Year"
@@ -173,10 +173,10 @@ export default function TaxTabsPage() {
   };
 
   return (
-    <div className="p-4 mt-3">
+    <div className="p-4 mt-3 grid place-content-center">
       <Link
         href="/"
-        className=" bg-blue-500 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2"
+        className=" bg-blue-500 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
       >
         <span className="text-lg">Back to Home</span>
       </Link>
@@ -184,7 +184,7 @@ export default function TaxTabsPage() {
       <div className="tabs mt-5">
         <button
           onClick={() => setActiveTab("tab1")}
-          className={`mr-2 px-4 py-2 rounded-md ${
+          className={`mb-2 mr-2 px-4 py-2 rounded-md ${
             activeTab === "tab1" ? "bg-blue-500 text-white" : "bg-gray-200"
           }`}
         >
@@ -200,7 +200,7 @@ export default function TaxTabsPage() {
         </button>
         <button
           onClick={() => setActiveTab("tab3")}
-          className={`px-4 py-2 rounded-md ${
+          className={`mt-2 px-4 py-2 rounded-md ${
             activeTab === "tab3" ? "bg-blue-500 text-white" : "bg-gray-200"
           }`}
         >

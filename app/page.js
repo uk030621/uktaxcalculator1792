@@ -153,10 +153,10 @@ export default function TaxParameters() {
     <div className="p-4 mt-3">
       <Link
         href="\calculate"
-        className="ml-4 bg-blue-500 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2"
+        className="ml-4 bg-blue-500 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
       >
         <span className="text-lg">Calculate Tax</span>
-        <span className="text-4xl"> ➡️ 🧮</span>
+        <span className="text-4xl"> ➡️</span>
       </Link>
       <h1 className="text-lg font-bold mt-4 mb-4 ml-4">
         Manage Tax & NI Parameters

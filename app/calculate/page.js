@@ -18,23 +18,26 @@ export default function Calculator() {
   };
 
   return (
-    <div className="p-4 mt-3">
+    <div className="p-4 mt-3 grid place-content-center">
       <Link
         href="\"
-        className="ml-4 bg-blue-500 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2"
+        className="ml-4 bg-blue-500 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
       >
         <span className="text-lg">Tax & NI Parameters</span>
-        <span className="text-4xl"> ➡️📅</span>
+        <span className="text-4xl"> ➡️</span>
       </Link>
-      <div className="ml-4">
-        <div className="flex">
-          <h1 className="text-2xl font-bold mt-3 mb-2">
-            Employee Tax & NI Calculator
-          </h1>
-          <Link className="mt-5 ml-4" href="/complextaxtabs">
-            Tabs ➡️
-          </Link>
-        </div>
+      <Link
+        className="ml-4 mt-2 underline underline-offset-4"
+        href="/complextaxtabs"
+      >
+        Tabs
+      </Link>
+
+      <div className="ml-4 grid place-content-center">
+        <h1 className="text-lg font-bold mt-3 mb-2">
+          Employee Tax & NI Calculator
+        </h1>
+
         <input
           className="border p-2 mr-2 mb-3 rounded-md"
           placeholder="Year"
