@@ -308,16 +308,16 @@ export default function TaxParameters() {
               <td className="border px-4 py-2">
                 <div className="flex flex-col">
                   <button
-                    className="text-left mb-2"
+                    className="text-left mb-6"
                     onClick={() => setNewParam(p)}
                   >
-                    ✏️
+                    ✏️ Edit
                   </button>
                   <button
                     className="text-left"
                     onClick={() => handleDelete(p._id)}
                   >
-                    🗑️
+                    🗑️ Trash
                   </button>
                 </div>
               </td>
