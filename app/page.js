@@ -158,13 +158,13 @@ export default function TaxParameters() {
   };
 
   return (
-    <div className="p-4 mt-3">
+    <div className="p-4 bg-slate-100 min-h-screen">
       <Link
         href="\calculate"
-        className="ml-4 bg-blue-500 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
+        className="ml-4 bg-slate-500 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
       >
         <span className="text-lg">Calculate Tax</span>
-        <span className="text-4xl"> ➡️</span>
+        <span className="text-2xl"> ➡️</span>
       </Link>
       <h1 className="text-lg font-bold mt-4 mb-4 ml-4">
         Manage Tax & NI Parameters
@@ -178,7 +178,7 @@ export default function TaxParameters() {
         <div className="grid grid-cols-2 gap-4">
           {/* Year */}
           <div>
-            <label className="block font-bold mb-1 text-sm">Year</label>
+            <label className="block font-bold mb-1 text-sm">Tax Year</label>
             <input
               className="border p-2 w-full text-xs"
               type="number"
@@ -253,14 +253,14 @@ export default function TaxParameters() {
           ))}
         </div>
         <button
-          className="bg-blue-500 text-white px-4 py-2 mt-4 rounded-md"
+          className="bg-slate-500 text-white px-4 py-2 mt-4 rounded-md"
           onClick={handleAddOrUpdate}
         >
           {newParam._id ? "Update Parameter" : "Add Parameter"}
         </button>
         {/* Refresh/Reload Button */}
         <button
-          className="bg-gray-500 text-white px-4 py-2 rounded-md ml-3"
+          className="bg-slate-500 text-white px-4 py-2 rounded-md ml-3"
           onClick={handleReload}
         >
           Refresh
@@ -271,7 +271,7 @@ export default function TaxParameters() {
       <table className="table-auto w-full">
         <thead className="text-left text-sm">
           <tr>
-            <th className="border px-4 py-2">Year</th>
+            <th className="border px-4 py-2">Tax Year</th>
             <th className="border px-4 py-2">Income Tax</th>
             <th className="border px-4 py-2">National Insurance</th>
             <th className="border px-4 py-2">Actions</th>
@@ -280,7 +280,9 @@ export default function TaxParameters() {
         <tbody className="text-xs">
           {params.map((p) => (
             <tr key={p._id}>
-              <td className="border px-4 py-2">{p.year}</td>
+              <td className="border px-4 py-2">
+                {p.year} / {+p.year + 1}
+              </td>
               <td className="border px-4 py-2">
                 <ul>
                   {Object.entries(p.incomeTax).map(([key, value]) => (

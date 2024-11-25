@@ -83,7 +83,7 @@ export default function TaxTabsPage() {
         }
       />
       <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        className="bg-slate-500 text-white px-4 py-2 rounded-md"
         onClick={handleCalculateTab1}
       >
         Calculate
@@ -173,7 +173,7 @@ export default function TaxTabsPage() {
         onChange={(e) => setTab2((prev) => ({ ...prev, rate: e.target.value }))}
       />
       <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        className="bg-slate-500 text-white px-4 py-2 rounded-md"
         onClick={handleCalculateTab2}
       >
         Calculate
@@ -206,7 +206,7 @@ export default function TaxTabsPage() {
         }
       />
       <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        className="bg-slate-500 text-white px-4 py-2 rounded-md"
         onClick={handleCalculateTab3}
       >
         Calculate
@@ -233,19 +233,19 @@ export default function TaxTabsPage() {
   };
 
   return (
-    <div className="p-4 mt-3 grid place-content-center">
+    <div className="p-4 mt-3 grid place-content-start bg-slate-100 min-h-screen">
       <Link
         href="/"
-        className=" bg-blue-500 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
+        className=" bg-slate-500 px-6 py-2 text-white rounded-md flex items-center justify-center gap-2 w-fit"
       >
-        <span className="text-lg">Back to Home</span>
+        <span className="text-lg">⬅️ Home</span>
       </Link>
 
       <div className="tabs mt-5">
         <button
           onClick={() => setActiveTab("tab1")}
           className={`mb-2 mr-2 px-4 py-2 rounded-md ${
-            activeTab === "tab1" ? "bg-blue-500 text-white" : "bg-gray-200"
+            activeTab === "tab1" ? "bg-slate-500 text-white" : "bg-gray-200"
           }`}
         >
           Tax Calculator
@@ -253,7 +253,7 @@ export default function TaxTabsPage() {
         <button
           onClick={() => setActiveTab("tab2")}
           className={`mr-2 px-4 py-2 rounded-md ${
-            activeTab === "tab2" ? "bg-blue-500 text-white" : "bg-gray-200"
+            activeTab === "tab2" ? "bg-slate-500 text-white" : "bg-gray-200"
           }`}
         >
           Hourly Wage Calculator
@@ -261,7 +261,7 @@ export default function TaxTabsPage() {
         <button
           onClick={() => setActiveTab("tab3")}
           className={`mt-2 px-4 py-2 rounded-md ${
-            activeTab === "tab3" ? "bg-blue-500 text-white" : "bg-gray-200"
+            activeTab === "tab3" ? "bg-slate-500 text-white" : "bg-gray-200"
           }`}
         >
           Business Profit Calculator
