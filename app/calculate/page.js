@@ -33,7 +33,7 @@ export default function Calculator() {
   };
 
   return (
-    <div className=" pt-2 grid place-content-center bg-slate-200 min-h-screen">
+    <div className=" pt-2 pl-4 grid place-content-start bg-slate-200 min-h-screen">
       <div className="">
         <Link
           href="\"
@@ -81,9 +81,7 @@ export default function Calculator() {
         </button>
         {result && (
           <div className="mt-4">
-            <p className="ml-1 mb-1 font-bold text-slate-700">
-              Annual Income Tax
-            </p>
+            <p className="ml-1 font-bold text-slate-700">Annual Income Tax</p>
             <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-4 shadow-2xl">
               <p>@ 20% = £{result.tax20.toFixed(2)}</p>
               <p>@ 40% = £{result.tax40.toFixed(2)}</p>
@@ -142,7 +140,7 @@ export default function Calculator() {
             </div>
 
             <p className="ml-1 font-bold text-slate-700">Effective Tax Rate</p>
-            <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-4 shadow-2xl">
+            <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-10 shadow-2xl">
               <p>
                 Employed:{" "}
                 {(
