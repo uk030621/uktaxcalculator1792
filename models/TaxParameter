@@ -16,6 +16,8 @@ const TaxParameterSchema = new mongoose.Schema({
     upperEarningsLimit: { type: Number, required: true },
     primaryRate: { type: Number, required: true },
     upperRate: { type: Number, required: true },
+    selfPrimaryRate: { type: Number, required: true },
+    selfUpperRate: { type: Number, required: true },
   },
 });
 

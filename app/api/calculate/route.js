@@ -26,8 +26,15 @@ export async function POST(request) {
     higherThreshold,
     taperThreshold,
   } = taxParams.incomeTax;
-  const { primaryThreshold, upperEarningsLimit, primaryRate, upperRate } =
-    taxParams.nationalInsurance;
+
+  const {
+    primaryThreshold,
+    upperEarningsLimit,
+    primaryRate,
+    upperRate,
+    selfPrimaryRate,
+    selfUpperRate,
+  } = taxParams.nationalInsurance;
 
   // Ensure valid inputs
   if (income <= 0) {
@@ -43,7 +50,6 @@ export async function POST(request) {
   let taxAt40Percent = 0;
   let taxAt45Percent = 0;
   let taper40 = 0;
-  let taper45 = 0;
 
   if (income - taperThreshold < 0) {
     taper40 = 0;
@@ -52,9 +58,7 @@ export async function POST(request) {
   }
 
   if (income > higherThreshold) {
-    taper45 = income - higherThreshold;
   } else {
-    taper45 = 0;
   }
 
   let calculation = (income - taperThreshold) / 2;
@@ -105,7 +109,7 @@ export async function POST(request) {
   });
   console.log("Total Income Tax = £", totalIncomeTax);
 
-  // National Insurance Calculation
+  // Employed National Insurance Calculation
   let ni = 0;
   if (income > primaryThreshold) {
     ni =
@@ -116,6 +120,19 @@ export async function POST(request) {
   }
   console.log("National Insurance = £", ni);
 
+  // Self-Employed National Insurance Calculation
+  let eni = 0;
+  if (income > primaryThreshold) {
+    eni =
+      (Math.min(income, upperEarningsLimit) - primaryThreshold) *
+      selfPrimaryRate;
+    if (income > upperEarningsLimit) {
+      eni += (income - upperEarningsLimit) * selfUpperRate;
+    }
+  }
+  console.log("Employed National Insurance = £", ni);
+  console.log("Self-Employed National Insurance = £", eni);
+
   return NextResponse.json({
     income: income,
     incomeTax: totalIncomeTax,
@@ -123,5 +140,6 @@ export async function POST(request) {
     tax40: taxAt40Percent,
     tax45: taxAt45Percent,
     nationalInsurance: ni,
+    senationalInsurance: eni,
   });
 }

@@ -21,6 +21,8 @@ export default function TaxParameters() {
       upperEarningsLimit: "",
       primaryRate: "",
       upperRate: "",
+      selfPrimaryRate: "",
+      selfUpperRate: "",
     },
   });
 
@@ -56,6 +58,8 @@ export default function TaxParameters() {
         upperEarningsLimit: +newParam.nationalInsurance.upperEarningsLimit || 0,
         primaryRate: +newParam.nationalInsurance.primaryRate || 0,
         upperRate: +newParam.nationalInsurance.upperRate || 0,
+        selfPrimaryRate: +newParam.nationalInsurance.primaryRate || 0,
+        selfUpperRate: +newParam.nationalInsurance.upperRate || 0,
       },
     };
 
@@ -101,6 +105,8 @@ export default function TaxParameters() {
           upperEarningsLimit: "",
           primaryRate: "",
           upperRate: "",
+          selfPrimaryRate: "",
+          selfUpperRate: "",
         },
       });
     } catch (err) {
@@ -145,6 +151,8 @@ export default function TaxParameters() {
         upperEarningsLimit: "",
         primaryRate: "",
         upperRate: "",
+        selfPrimaryRate: "",
+        selfUpperRate: "",
       },
     });
   };

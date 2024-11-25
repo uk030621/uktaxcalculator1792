@@ -1,11 +1,26 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function Calculator() {
   const [year, setYear] = useState("");
   const [income, setIncome] = useState("");
   const [result, setResult] = useState(null);
+  const [availableYears, setAvailableYears] = useState([]);
+
+  // Fetch available years from the backend
+  useEffect(() => {
+    const fetchYears = async () => {
+      try {
+        const res = await fetch("/api/getYears");
+        const data = await res.json();
+        setAvailableYears(data); // Set the fetched years to state
+      } catch (error) {
+        console.error("Failed to fetch years:", error);
+      }
+    };
+    fetchYears();
+  }, []);
 
   const calculate = async () => {
     const res = await fetch("/api/calculate", {
@@ -35,14 +50,23 @@ export default function Calculator() {
 
       <div className="ml-4 grid place-content-center">
         <h1 className="text-lg font-bold mt-3 mb-2">
-          Employee Tax & NI Calculator
+          Basic Tax & NI Calculator
         </h1>
 
-        <input
-          className="border p-2 mr-2 mb-3 rounded-md"
-          placeholder="Year"
+        {/* Year Dropdown */}
+        <select
+          className="border p-2 pr-6 mr-2 mb-3 rounded-md appearance-none"
+          value={year}
           onChange={(e) => setYear(e.target.value)}
-        />
+        >
+          <option value="">Select Year</option>
+          {availableYears.map((yr) => (
+            <option key={yr} value={yr}>
+              {yr}
+            </option>
+          ))}
+        </select>
+
         <input
           className="border p-2 mr-2 mb-3 rounded-md"
           placeholder="Annual Income"
@@ -67,24 +91,44 @@ export default function Calculator() {
               <span className="font-bold mb-3">
                 Annual National Insurance...
               </span>
-              <br></br>£{result.nationalInsurance.toFixed(2)}
+              <br></br> Employed: £{result.nationalInsurance.toFixed(2)}
+              <br></br> Self Employed: £{result.senationalInsurance.toFixed(2)}
             </p>
             <p className="font-bold mt-3">Annual Deductions...</p>
             <p className="mb-3">
-              £{(result.incomeTax + result.nationalInsurance).toFixed(2)}
+              Employed: £
+              {(result.incomeTax + result.nationalInsurance).toFixed(2)}
+              <br></br>
+              Self-Employed: £
+              {(result.incomeTax + result.senationalInsurance).toFixed(2)}
             </p>
             <p className="mt-3 font-bold">Take home pay per month...</p>
             <p className="mb-3">
-              £
+              Employed: £
               {(
                 (result.income - result.incomeTax - result.nationalInsurance) /
+                12
+              ).toFixed(2)}
+              <br></br>
+              Self-Employed: £
+              {(
+                (result.income -
+                  result.incomeTax -
+                  result.senationalInsurance) /
                 12
               ).toFixed(2)}
             </p>
             <p className="mt-3 font-bold">Effective Tax Rate...</p>
             <p>
+              Employed:{" "}
               {(
                 ((result.incomeTax + result.nationalInsurance) / income) *
+                100
+              ).toFixed(1)}
+              %<br></br>
+              Self-Employed:{" "}
+              {(
+                ((result.incomeTax + result.senationalInsurance) / income) *
                 100
               ).toFixed(1)}
               %

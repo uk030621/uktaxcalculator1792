@@ -1,23 +1,47 @@
+// complextaxtabs/page.js
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function TaxTabsPage() {
-  const [activeTab, setActiveTab] = useState("tab1");
+  const [activeTab, setActiveTab] = useState("tab1"); // Default to "tab1"
 
   // State for each tab's inputs and results
   const [tab1, setTab1] = useState({ year: "", income: "", result: null });
   const [tab2, setTab2] = useState({ hours: "", rate: "", result: null });
   const [tab3, setTab3] = useState({ revenue: "", expenses: "", result: null });
 
+  const [availableYears, setAvailableYears] = useState([]); // Must be an array
+
+  // Fetch available years from the backend
+  useEffect(() => {
+    const fetchYears = async () => {
+      try {
+        const res = await fetch("/api/getYears");
+        if (!res.ok) throw new Error("Failed to fetch years");
+        const data = await res.json();
+        console.log("Fetched years:", data); // Debugging
+        setAvailableYears(data); // Ensure this is an array
+      } catch (error) {
+        console.error("Failed to fetch years:", error);
+      }
+    };
+    fetchYears();
+  }, []);
+
   const handleCalculateTab1 = async () => {
-    const res = await fetch("/api/calculate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ year: tab1.year, income: tab1.income }),
-    });
-    const data = await res.json();
-    setTab1((prev) => ({ ...prev, result: data }));
+    try {
+      const res = await fetch("/api/calculate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ year: tab1.year, income: tab1.income }),
+      });
+      const data = await res.json();
+      console.log("Tab1 Calculation Result:", data); // Debugging
+      setTab1((prev) => ({ ...prev, result: data }));
+    } catch (error) {
+      console.error("Calculation failed:", error);
+    }
   };
 
   const handleCalculateTab2 = () => {
@@ -33,12 +57,23 @@ export default function TaxTabsPage() {
   const renderTab1Content = () => (
     <div>
       <h2 className="text-lg font-bold mb-2">Annual Income Tax Calculator</h2>
-      <input
-        className="border p-2 mr-2 mb-3 rounded-md"
-        placeholder="Year"
+      {/* Year Dropdown */}
+      <select
+        className="border p-2 pr-6 mr-2 mb-3 rounded-md appearance-none"
         value={tab1.year}
-        onChange={(e) => setTab1((prev) => ({ ...prev, year: e.target.value }))}
-      />
+        onChange={(e) => {
+          const year = e.target.value;
+          console.log("Selected year:", year); // Debug log
+          setTab1((prev) => ({ ...prev, year })); // Update state
+        }}
+      >
+        <option value="">Select Year</option>
+        {availableYears.map((yr) => (
+          <option key={yr} value={yr}>
+            {yr}
+          </option>
+        ))}
+      </select>
       <input
         className="border p-2 mr-2 mb-3 rounded-md"
         placeholder="Annual Income"
@@ -64,27 +99,52 @@ export default function TaxTabsPage() {
           </p>
           <p>
             <span className="font-bold mb-3">Annual National Insurance...</span>
-            <br></br>£{tab1.result.nationalInsurance.toFixed(2)}
+            <br />
+            Employed: £{tab1.result.nationalInsurance.toFixed(2)}
+            <br />
+            Self Employed: £{tab1.result.senationalInsurance.toFixed(2)}
           </p>
           <p className="font-bold mt-3">Annual Deductions...</p>
           <p className="mb-3">
-            £
+            Employed: £
             {(tab1.result.incomeTax + tab1.result.nationalInsurance).toFixed(2)}
+            <br />
+            Self Employed: £
+            {(tab1.result.incomeTax + tab1.result.senationalInsurance).toFixed(
+              2
+            )}
           </p>
           <p className="mt-3 font-bold">Take home pay per month...</p>
           <p className="mb-3">
-            £
+            Employed: £
             {(
               (tab1.result.income -
                 tab1.result.incomeTax -
                 tab1.result.nationalInsurance) /
               12
             ).toFixed(2)}
+            <br></br>
+            Self-Employed: £
+            {(
+              (tab1.result.income -
+                tab1.result.incomeTax -
+                tab1.result.senationalInsurance) /
+              12
+            ).toFixed(2)}
           </p>
+
           <p className="mt-3 font-bold">Effective Tax Rate...</p>
           <p>
+            Employed:{" "}
             {(
               ((tab1.result.incomeTax + tab1.result.nationalInsurance) /
+                tab1.income) *
+              100
+            ).toFixed(1)}
+            %<br></br>
+            Self-Employed:{" "}
+            {(
+              ((tab1.result.incomeTax + tab1.result.senationalInsurance) /
                 tab1.income) *
               100
             ).toFixed(1)}
@@ -97,7 +157,7 @@ export default function TaxTabsPage() {
 
   const renderTab2Content = () => (
     <div>
-      <h2 className="text-xl font-bold mb-2">Hourly Wage Calculator</h2>
+      <h2 className="text-lg font-bold mb-2">Hourly Wage Calculator</h2>
       <input
         className="border p-2 mr-2 mb-3 rounded-md"
         placeholder="Hours Worked"
@@ -128,7 +188,7 @@ export default function TaxTabsPage() {
 
   const renderTab3Content = () => (
     <div>
-      <h2 className="text-xl font-bold mb-2">Business Profit Calculator</h2>
+      <h2 className="text-lg font-bold mb-2">Business Profit Calculator</h2>
       <input
         className="border p-2 mr-2 mb-3 rounded-md"
         placeholder="Revenue"
@@ -168,7 +228,7 @@ export default function TaxTabsPage() {
       case "tab3":
         return renderTab3Content();
       default:
-        return null;
+        return <p>No content available</p>; // Default fallback
     }
   };
 
@@ -204,24 +264,11 @@ export default function TaxTabsPage() {
             activeTab === "tab3" ? "bg-blue-500 text-white" : "bg-gray-200"
           }`}
         >
-          Profit Calculator
+          Business Profit Calculator
         </button>
       </div>
 
-      <div className="tab-content mt-5">{renderContent()}</div>
-
-      <style jsx>{`
-        .tabs button {
-          cursor: pointer;
-          border: none;
-        }
-        .tab-content {
-          padding: 20px;
-          border: 1px solid #ddd;
-          border-radius: 5px;
-          background: #f9f9f9;
-        }
-      `}</style>
+      <div className="content mt-5">{renderContent()}</div>
     </div>
   );
 }
