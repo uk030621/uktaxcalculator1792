@@ -33,11 +33,11 @@ export default function Calculator() {
   };
 
   return (
-    <div className=" pt-2 grid place-content-start bg-slate-100 min-h-screen">
+    <div className=" pt-2 grid place-content-start bg-slate-200 min-h-screen">
       <div className="ml-6">
         <Link
           href="\"
-          className=" bg-slate-500 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
+          className=" bg-slate-500 px-4 py-2 text-white rounded-md flex items-center justify-center gap-2 w-fit"
         >
           <span className="text-lg">Tax & NI Parameters</span>
           <span className="text-2xl"> ➡️</span>
@@ -74,72 +74,95 @@ export default function Calculator() {
           onChange={(e) => setIncome(e.target.value)}
         />
         <button
-          className="bg-slate-500 text-white px-4 py-2 rounded-md"
+          className="bg-slate-500 text-white px-4 py-2 rounded-md w-fit"
           onClick={calculate}
         >
           Calculate
         </button>
         {result && (
           <div className="mt-4">
-            <p className="mb-1 font-bold">Annual Income Tax</p>
-            <p>@ 20% = £{result.tax20.toFixed(2)}</p>
-            <p>@ 40% = £{result.tax40.toFixed(2)}</p>
-            <p>@ 45% = £{result.tax45.toFixed(2)}</p>
+            <p className="ml-1 mb-1 font-bold text-slate-700">
+              Annual Income Tax
+            </p>
+            <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-4 shadow-2xl">
+              <p>@ 20% = £{result.tax20.toFixed(2)}</p>
+              <p>@ 40% = £{result.tax40.toFixed(2)}</p>
+              <p>@ 45% = £{result.tax45.toFixed(2)}</p>
+              <p className="mt-1">Total = £{result.incomeTax.toFixed(2)}</p>
+            </div>
 
-            <p className="mt-1 mb-3">Total = £{result.incomeTax.toFixed(2)}</p>
+            <p className="ml-1 font-bold text-slate-700">
+              Annual National Insurance
+            </p>
+            <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-4 shadow-2xl">
+              <p>Employed: £{result.nationalInsurance.toFixed(2)}</p>
+              <p>Self Employed: £{result.senationalInsurance.toFixed(2)}</p>
+              <p>Pensioner: £0</p>
+            </div>
 
-            <p>
-              <span className="font-bold mb-3">Annual National Insurance</span>
-              <br></br> Employed: £{result.nationalInsurance.toFixed(2)}
-              <br></br> Self Employed: £{result.senationalInsurance.toFixed(2)}
-              <br />
-              Pensioner: £0
+            <p className="ml-1 font-bold text-slate-700">Annual Deductions</p>
+            <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-4 shadow-2xl">
+              <p>
+                Employed: £
+                {(result.incomeTax + result.nationalInsurance).toFixed(2)}
+              </p>
+              <p>
+                Self-Employed: £
+                {(result.incomeTax + result.senationalInsurance).toFixed(2)}
+              </p>
+              <p>Pensioner: £{result.incomeTax.toFixed(2)}</p>
+            </div>
+
+            <p className="ml-1 font-bold text-slate-700">
+              Net Income per month
             </p>
-            <p className="font-bold mt-3">Annual Deductions</p>
-            <p className="mb-3">
-              Employed: £
-              {(result.incomeTax + result.nationalInsurance).toFixed(2)}
-              <br></br>
-              Self-Employed: £
-              {(result.incomeTax + result.senationalInsurance).toFixed(2)}
-              <br />
-              Pensioner: £{result.incomeTax.toFixed(2)}
-            </p>
-            <p className="mt-3 font-bold">Net Income per month</p>
-            <p className="mb-3">
-              Employed: £
-              {(
-                (result.income - result.incomeTax - result.nationalInsurance) /
-                12
-              ).toFixed(2)}
-              <br></br>
-              Self-Employed: £
-              {(
-                (result.income -
-                  result.incomeTax -
-                  result.senationalInsurance) /
-                12
-              ).toFixed(2)}
-              <br />
-              Pensioner: £{((result.income - result.incomeTax) / 12).toFixed(2)}
-            </p>
-            <p className="mt-3 font-bold">Effective Tax Rate</p>
-            <p>
-              Employed:{" "}
-              {(
-                ((result.incomeTax + result.nationalInsurance) / income) *
-                100
-              ).toFixed(1)}
-              %<br></br>
-              Self-Employed:{" "}
-              {(
-                ((result.incomeTax + result.senationalInsurance) / income) *
-                100
-              ).toFixed(1)}
-              %
-              <br />
-              Pensioner: {((result.incomeTax / income) * 100).toFixed(1)}%
-            </p>
+            <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-4 shadow-2xl">
+              <p>
+                Employed: £
+                {(
+                  (result.income -
+                    result.incomeTax -
+                    result.nationalInsurance) /
+                  12
+                ).toFixed(2)}
+              </p>
+              <p>
+                Self-Employed: £
+                {(
+                  (result.income -
+                    result.incomeTax -
+                    result.senationalInsurance) /
+                  12
+                ).toFixed(2)}
+              </p>
+              <p>
+                Pensioner: £
+                {((result.income - result.incomeTax) / 12).toFixed(2)}
+              </p>
+            </div>
+
+            <p className="ml-1 font-bold text-slate-700">Effective Tax Rate</p>
+            <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-4 shadow-2xl">
+              <p>
+                Employed:{" "}
+                {(
+                  ((result.incomeTax + result.nationalInsurance) / income) *
+                  100
+                ).toFixed(1)}
+                %
+              </p>
+              <p>
+                Self-Employed:{" "}
+                {(
+                  ((result.incomeTax + result.senationalInsurance) / income) *
+                  100
+                ).toFixed(1)}
+                %
+              </p>
+              <p>
+                Pensioner: {((result.incomeTax / income) * 100).toFixed(1)}%
+              </p>
+            </div>
           </div>
         )}
       </div>

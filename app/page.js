@@ -158,7 +158,7 @@ export default function TaxParameters() {
   };
 
   return (
-    <div className="p-4 bg-slate-100 min-h-screen">
+    <div className="p-2 bg-slate-200 min-h-screen">
       <Link
         href="\calculate"
         className="ml-4 bg-slate-500 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
@@ -318,7 +318,7 @@ export default function TaxParameters() {
               <td className="border px-4 py-2">
                 <div className="flex flex-col">
                   <button
-                    className="text-left mb-6"
+                    className="text-left mb-10"
                     onClick={() => setNewParam(p)}
                   >
                     ✏️ Edit
