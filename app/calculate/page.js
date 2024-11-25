@@ -37,14 +37,14 @@ export default function Calculator() {
       <div className="">
         <Link
           href="\"
-          className="mt-3 bg-slate-500 px-4 py-2 text-white rounded-md flex items-center justify-center gap-2 w-fit"
+          className="ml-2 mt-3 bg-slate-500 px-4 py-2 text-white rounded-md flex items-center justify-center gap-2 w-fit"
         >
           <span className="text-lg">Tax & NI Parameters</span>
           <span className="text-2xl"> ➡️</span>
         </Link>
       </div>
       <Link
-        className="mt-2 underline underline-offset-4"
+        className="ml-2 mt-2 underline underline-offset-4"
         href="/complextaxtabs"
       >
         Tabs
