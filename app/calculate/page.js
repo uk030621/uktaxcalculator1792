@@ -33,7 +33,7 @@ export default function Calculator() {
   };
 
   return (
-    <div className=" pt-2 pl-4 grid place-content-start bg-slate-200 min-h-screen">
+    <div className=" pt-2 pl-4 grid place-content-start min-h-screen">
       <div className="">
         <Link
           href="\"

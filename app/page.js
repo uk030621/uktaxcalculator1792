@@ -158,7 +158,7 @@ export default function TaxParameters() {
   };
 
   return (
-    <div className="p-2 bg-slate-200 min-h-screen">
+    <div className="p-2 min-h-screen">
       <Link
         href="\calculate"
         className="bg-slate-500 mt-3 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
@@ -286,7 +286,7 @@ export default function TaxParameters() {
               <td className="border px-4 py-2">
                 <ul>
                   {Object.entries(p.incomeTax).map(([key, value]) => (
-                    <li key={key}>
+                    <li className="mb-3" key={key}>
                       <strong>
                         {key
                           .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
@@ -302,7 +302,7 @@ export default function TaxParameters() {
               <td className="border px-4 py-2">
                 <ul>
                   {Object.entries(p.nationalInsurance).map(([key, value]) => (
-                    <li key={key}>
+                    <li className="mb-3" key={key}>
                       <strong>
                         {key
                           .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
