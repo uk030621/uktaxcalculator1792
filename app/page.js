@@ -2,6 +2,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { InformationCircleIcon } from "@heroicons/react/24/solid";
 
 export default function TaxParameters() {
   const [params, setParams] = useState([]); // Existing tax parameters
@@ -161,19 +162,35 @@ export default function TaxParameters() {
     <div className="p-2 min-h-screen">
       <Link
         href="\calculate"
-        className="bg-slate-500 mt-3 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
+        className="bg-slate-500 mt-3 mb-3 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
       >
         <span className="text-lg">Calculate Tax</span>
         <span className="text-2xl"> ➡️</span>
       </Link>
-      <h1 className="text-lg font-bold mt-4 mb-4">
-        Manage Tax & NI Parameters
-      </h1>
+      <div className="flex items-center space-x-2">
+        {/* Title Section */}
+        <h1 className="text-lg font-bold">Manage Tax & NI Parameters</h1>
 
+        {/* Info Icon with Tooltip */}
+        <div className="relative group inline-block">
+          {/* Heroicons Info Symbol */}
+          <InformationCircleIcon className="h-6 w-6 text-blue-500 cursor-pointer" />
+
+          {/* Tooltip */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 w-64 bg-gray-700 text-white text-sm rounded-md px-4 py-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            Please add future tax year parameters or update existing ones. It is
+            important to complete all fields to avoid errors. For the Tax Year
+            field, only the start year is required (e.g., enter 2024 for the
+            2024-2025 tax year).
+          </div>
+        </div>
+      </div>
       {/* Form Section */}
-      <div className="bg-gray-100 p-4 mb-8 rounded">
+      <div className="bg-gray-100 p-4 mb-8 mt-3 rounded">
         <h2 className="font-bold mb-4">
-          {newParam._id ? "Edit Tax Parameter" : "Add New Tax Parameter"}
+          {newParam._id
+            ? "Edit Tax & NI Parameters"
+            : "Add New Tax & NI Parameters"}
         </h2>
         <div className="grid grid-cols-2 gap-4">
           {/* Year */}
@@ -256,7 +273,7 @@ export default function TaxParameters() {
           className="bg-slate-500 text-white px-4 py-2 mt-4 rounded-md"
           onClick={handleAddOrUpdate}
         >
-          {newParam._id ? "Update Parameter" : "Add Parameter"}
+          {newParam._id ? "Update Parameters" : "Add Parameters"}
         </button>
         {/* Refresh/Reload Button */}
         <button
