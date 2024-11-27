@@ -211,10 +211,7 @@ export default function TaxParameters() {
 
           {/* Tooltip */}
           <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 w-64 bg-gray-700 text-white text-sm rounded-md px-4 py-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-            Please add future tax year parameters or update existing ones. It is
-            important to complete all fields to avoid errors. For the Tax Year
-            field, only the start year is required (e.g., enter 2024 for the
-            2024-2025 tax year).
+            Please complete all fields. Click Refresh button to start over.
           </div>
         </div>
       </div>
@@ -322,7 +319,7 @@ export default function TaxParameters() {
         </button>
         {/* Refresh/Reload Button */}
         <button
-          className="bg-slate-500 text-white px-4 py-2 rounded-md ml-3"
+          className="bg-red-500 text-white px-4 py-2 rounded-md ml-3"
           onClick={handleReload}
         >
           Refresh

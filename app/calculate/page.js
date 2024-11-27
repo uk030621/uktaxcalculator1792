@@ -7,6 +7,7 @@ export default function Calculator() {
   const [income, setIncome] = useState("");
   const [result, setResult] = useState(null);
   const [availableYears, setAvailableYears] = useState([]);
+  const [error, setError] = useState(""); // For validation errors
 
   // Fetch available years from the backend
   useEffect(() => {
@@ -14,7 +15,7 @@ export default function Calculator() {
       try {
         const res = await fetch("/api/getYears");
         const data = await res.json();
-        setAvailableYears(data); // Set the fetched years to state
+        setAvailableYears(data);
       } catch (error) {
         console.error("Failed to fetch years:", error);
       }
@@ -23,6 +24,20 @@ export default function Calculator() {
   }, []);
 
   const calculate = async () => {
+    // Validation
+    if (!year) {
+      setError("Please select a year.");
+      return;
+    }
+    if (!income || isNaN(income)) {
+      setError("Please enter a valid numerical income.");
+      return;
+    }
+
+    // Reset error message
+    setError("");
+
+    // Perform calculation
     const res = await fetch("/api/calculate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -32,74 +47,109 @@ export default function Calculator() {
     setResult(data);
   };
 
+  const handleRefresh = () => {
+    setYear("");
+    setIncome("");
+    setResult(null);
+    setError(""); // Clear errors
+  };
+
   return (
-    <div className=" pt-2 pl-4 grid place-content-start min-h-screen">
-      <div className="">
+    <div className="pt-4 px-4 min-h-screen bg-gray-100">
+      {/* Header */}
+      <div className="mb-4">
         <Link
-          href="\"
-          className=" mt-3 bg-slate-500 px-4 py-2 text-white rounded-md flex items-center justify-center gap-2 w-fit"
+          href="/"
+          className="mt-3 bg-slate-500 px-4 py-2 text-white rounded-md flex items-center justify-center gap-2 w-fit"
         >
           <span className="text-lg">Tax & NI Parameters</span>
           <span className="text-2xl"> ➡️</span>
         </Link>
+        <Link
+          className="mt-2 underline underline-offset-4"
+          href="/complextaxtabs"
+        >
+          Tabs
+        </Link>
       </div>
-      <Link
-        className=" mt-2 underline underline-offset-4"
-        href="/complextaxtabs"
-      >
-        Tabs
-      </Link>
 
-      <div className=" grid place-content-center">
-        <h1 className="text-lg font-bold mt-3">Basic Tax & NI Calculator</h1>
+      {/* Calculator Section */}
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h1 className="text-lg font-bold">Basic Tax & NI Calculator</h1>
         <p className="text-xs mb-4">Excludes Scotland & Special Allowances</p>
 
         {/* Year Dropdown */}
-        <select
-          className="border p-2 pr-6 mr-2 mb-3 rounded-md appearance-none"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-        >
-          <option value="">Select Year</option>
-          {availableYears.map((yr) => (
-            <option key={yr} value={yr}>
-              {yr}
-            </option>
-          ))}
-        </select>
+        <div className="flex flex-wrap gap-2 mb-4">
+          <select
+            className="flex-1 border p-2 pr-6 rounded-md appearance-none"
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+          >
+            <option value="">Select Year</option>
+            {availableYears.map((yr) => (
+              <option key={yr} value={yr}>
+                {yr}
+              </option>
+            ))}
+          </select>
 
-        <input
-          className="border p-2 mr-2 mb-3 rounded-md"
-          placeholder="Annual Income"
-          onChange={(e) => setIncome(e.target.value)}
-        />
-        <button
-          className="bg-slate-500 text-white px-4 py-2 rounded-md w-fit"
-          onClick={calculate}
-        >
-          Calculate
-        </button>
+          <input
+            className="flex-1 border p-2 rounded-md"
+            placeholder="Annual Income"
+            value={income}
+            onChange={(e) => setIncome(e.target.value)}
+          />
+        </div>
+
+        {/* Error Message */}
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
+        {/* Buttons */}
+        <div className="flex gap-2 mb-4">
+          <button
+            className={`px-4 py-2 rounded-md w-1/2 md:w-auto ${
+              year && income && !isNaN(income)
+                ? "bg-slate-500 text-white"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+            }`}
+            onClick={calculate}
+            disabled={!year || !income || isNaN(income)} // Disable if invalid
+          >
+            Calculate
+          </button>
+          <button
+            className="bg-red-500 text-white px-4 py-2 rounded-md w-1/2 md:w-auto"
+            onClick={handleRefresh}
+          >
+            Refresh
+          </button>
+        </div>
+
+        {/* Results Section */}
         {result && (
-          <div className="mt-4">
-            <p className="ml-1 font-bold text-slate-700">Annual Income Tax</p>
-            <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-4 shadow-2xl">
+          <div className="grid gap-4 mt-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {/* Tax Box */}
+            <div className="bg-white p-4 border border-gray-300 rounded-lg shadow">
+              <p className="font-bold text-slate-700">Annual Income Tax</p>
               <p>@ 20% = £{result.tax20.toFixed(2)}</p>
               <p>@ 40% = £{result.tax40.toFixed(2)}</p>
               <p>@ 45% = £{result.tax45.toFixed(2)}</p>
               <p className="mt-1">Total = £{result.incomeTax.toFixed(2)}</p>
             </div>
 
-            <p className="ml-1 font-bold text-slate-700">
-              Annual National Insurance
-            </p>
-            <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-4 shadow-2xl">
+            {/* National Insurance Box */}
+            <div className="bg-white p-4 border border-gray-300 rounded-lg shadow">
+              <p className="font-bold text-slate-700">
+                Annual National Insurance
+              </p>
               <p>Employed: £{result.nationalInsurance.toFixed(2)}</p>
               <p>Self Employed: £{result.senationalInsurance.toFixed(2)}</p>
               <p>Pensioner: £0</p>
             </div>
 
-            <p className="ml-1 font-bold text-slate-700">Annual Deductions</p>
-            <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-4 shadow-2xl">
+            {/* Deductions Box */}
+            <div className="bg-white p-4 border border-gray-300 rounded-lg shadow">
+              <p className="font-bold text-slate-700">Annual Deductions</p>
               <p>
                 Employed: £
                 {(result.incomeTax + result.nationalInsurance).toFixed(2)}
@@ -111,10 +161,9 @@ export default function Calculator() {
               <p>Pensioner: £{result.incomeTax.toFixed(2)}</p>
             </div>
 
-            <p className="ml-1 font-bold text-slate-700">
-              Net Income per month
-            </p>
-            <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-4 shadow-2xl">
+            {/* Net Income Box */}
+            <div className="bg-white p-4 border border-gray-300 rounded-lg shadow">
+              <p className="font-bold text-slate-700">Net Income per month</p>
               <p>
                 Employed: £
                 {(
@@ -139,8 +188,9 @@ export default function Calculator() {
               </p>
             </div>
 
-            <p className="ml-1 font-bold text-slate-700">Effective Tax Rate</p>
-            <div className="bg-stone-100 border border-slate-200 rounded-md p-3 mb-10 shadow-2xl">
+            {/* Effective Tax Rate Box */}
+            <div className="bg-white p-4 border border-gray-300 rounded-lg shadow">
+              <p className="font-bold text-slate-700">Effective Tax Rate</p>
               <p>
                 Employed:{" "}
                 {(
