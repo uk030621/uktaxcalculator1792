@@ -337,61 +337,63 @@ export default function TaxParameters() {
           </tr>
         </thead>
         <tbody className="text-xs">
-          {params.map((p) => (
-            <tr key={p._id}>
-              <td className="border px-4 py-2">
-                {p.year} / {+p.year + 1}
-              </td>
-              <td className="border px-4 py-2">
-                <ul>
-                  {Object.entries(p.incomeTax).map(([key, value]) => (
-                    <li className="mb-3" key={key}>
-                      <strong>
-                        {key
-                          .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
-                          .toLowerCase() // Convert the entire string to lowercase
-                          .replace(/\b\w/g, (char) => char.toUpperCase())}
-                        :
-                      </strong>{" "}
-                      {value}
-                    </li>
-                  ))}
-                </ul>
-              </td>
-              <td className="border px-4 py-2">
-                <ul>
-                  {Object.entries(p.nationalInsurance).map(([key, value]) => (
-                    <li className="mb-3" key={key}>
-                      <strong>
-                        {key
-                          .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
-                          .toLowerCase() // Convert the entire string to lowercase
-                          .replace(/\b\w/g, (char) => char.toUpperCase())}
-                        :
-                      </strong>{" "}
-                      {value}
-                    </li>
-                  ))}
-                </ul>
-              </td>
-              <td className="border px-4 py-2">
-                <div className="flex flex-col">
-                  <button
-                    className="text-left mb-10"
-                    onClick={() => setNewParam(p)}
-                  >
-                    ✏️ Edit
-                  </button>
-                  <button
-                    className="text-left"
-                    onClick={() => handleDelete(p._id)}
-                  >
-                    🗑️ Trash
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
+          {params
+            .sort((a, b) => a.year - b.year) // Sort the parameters by year
+            .map((p) => (
+              <tr key={p._id}>
+                <td className="border px-4 py-2">
+                  {p.year} / {+p.year + 1}
+                </td>
+                <td className="border px-4 py-2">
+                  <ul>
+                    {Object.entries(p.incomeTax).map(([key, value]) => (
+                      <li className="mb-3" key={key}>
+                        <strong>
+                          {key
+                            .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
+                            .toLowerCase() // Convert the entire string to lowercase
+                            .replace(/\b\w/g, (char) => char.toUpperCase())}
+                          :
+                        </strong>{" "}
+                        {value}
+                      </li>
+                    ))}
+                  </ul>
+                </td>
+                <td className="border px-4 py-2">
+                  <ul>
+                    {Object.entries(p.nationalInsurance).map(([key, value]) => (
+                      <li className="mb-3" key={key}>
+                        <strong>
+                          {key
+                            .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
+                            .toLowerCase() // Convert the entire string to lowercase
+                            .replace(/\b\w/g, (char) => char.toUpperCase())}
+                          :
+                        </strong>{" "}
+                        {value}
+                      </li>
+                    ))}
+                  </ul>
+                </td>
+                <td className="border px-4 py-2">
+                  <div className="flex flex-col">
+                    <button
+                      className="text-left mb-10"
+                      onClick={() => setNewParam(p)}
+                    >
+                      ✏️ Edit
+                    </button>
+                    <button
+                      className="text-left"
+                      onClick={() => handleDelete(p._id)}
+                    >
+                      🗑️ Trash
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

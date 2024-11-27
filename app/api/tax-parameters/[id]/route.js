@@ -5,16 +5,10 @@ import TaxParameter from "@/models/TaxParameter";
 // PUT: Update a tax parameter by ID
 export async function PUT(request, context) {
   try {
-    //console.log("Incoming PUT Request URL:", request.url);
-    //console.log("Context object:", context);
-
     await connectDB();
 
-    // Await params before destructuring
     const params = await context.params;
-    const id = params.id; // Now you can safely access id
-
-    //console.log("Extracted ID:", id);
+    const id = params.id; // Extract the ID from the params
 
     if (!id) {
       return new Response(
@@ -23,22 +17,27 @@ export async function PUT(request, context) {
       );
     }
 
-    const data = await request.json();
-    //console.log("Request Data:", data);
+    const data = await request.json(); // Parse the request body
+    const { year, ...updateFields } = data; // Extract year and other fields
 
-    const { year, ...updateFields } = data;
-
-    if (Object.keys(updateFields).length === 0) {
+    // Check if any fields (including year) are being updated
+    if (!year && Object.keys(updateFields).length === 0) {
       return new Response(
         JSON.stringify({ error: "No fields provided for update." }),
         { status: 400 }
       );
     }
 
+    // Build the update object, including year if it's provided
+    const updateData = {
+      ...updateFields,
+      ...(year && { year }), // Conditionally include year
+    };
+
     const updatedParameter = await TaxParameter.findByIdAndUpdate(
       id,
-      { $set: updateFields },
-      { new: true, runValidators: true }
+      { $set: updateData },
+      { new: true, runValidators: true } // Return updated document, validate fields
     );
 
     if (!updatedParameter) {
@@ -49,7 +48,6 @@ export async function PUT(request, context) {
 
     return new Response(JSON.stringify(updatedParameter), { status: 200 });
   } catch (error) {
-    //console.error("Error during PUT request:", error);
     return new Response(JSON.stringify({ error: "Failed to update record." }), {
       status: 500,
     });
