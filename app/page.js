@@ -6,6 +6,7 @@ import { InformationCircleIcon } from "@heroicons/react/24/solid";
 
 export default function TaxParameters() {
   const [params, setParams] = useState([]); // Existing tax parameters
+  const [errors, setErrors] = useState({});
   const [newParam, setNewParam] = useState({
     year: "",
     incomeTax: {
@@ -37,6 +38,36 @@ export default function TaxParameters() {
 
   // Add or update parameter
   const handleAddOrUpdate = async () => {
+    // Validation logic
+    const validateFields = () => {
+      let validationErrors = {};
+      // Validate income tax fields
+      for (const key in newParam.incomeTax) {
+        if (!newParam.incomeTax[key]) {
+          validationErrors[`incomeTax.${key}`] = `${key} is required`;
+        }
+      }
+      // Validate national insurance fields
+      for (const key in newParam.nationalInsurance) {
+        if (!newParam.nationalInsurance[key]) {
+          validationErrors[`nationalInsurance.${key}`] = `${key} is required`;
+        }
+      }
+
+      if (!newParam.year) {
+        validationErrors.year = "Year is required";
+      }
+
+      setErrors(validationErrors);
+      return Object.keys(validationErrors).length === 0; // Return true if no errors
+    };
+
+    // Perform validation before proceeding
+    if (!validateFields()) {
+      console.error("Validation failed");
+      return;
+    }
+
     const method = newParam._id ? "PUT" : "POST";
     const url = newParam._id
       ? `/api/tax-parameters/${newParam._id}` // Target dynamic route for PUT
@@ -110,6 +141,7 @@ export default function TaxParameters() {
           selfUpperRate: "",
         },
       });
+      setErrors({});
     } catch (err) {
       console.error("Error:", err.message);
     }
@@ -156,6 +188,7 @@ export default function TaxParameters() {
         selfUpperRate: "",
       },
     });
+    setErrors({}); // Clear all errors
   };
 
   return (
@@ -215,10 +248,11 @@ export default function TaxParameters() {
                   .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
                   .toLowerCase() // Convert the entire string to lowercase
                   .replace(/\b\w/g, (char) => char.toUpperCase())}{" "}
-                {/*Capitalize the first letter of each word*/}
               </label>
               <input
-                className="border p-2 w-full text-xs"
+                className={`border p-2 w-full text-xs ${
+                  errors[`incomeTax.${key}`] ? "border-red-500" : ""
+                }`}
                 type="number"
                 placeholder={key
                   .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
@@ -235,6 +269,11 @@ export default function TaxParameters() {
                   })
                 }
               />
+              {errors[`incomeTax.${key}`] && (
+                <p className="text-red-500 text-xs">
+                  {errors[`incomeTax.${key}`]}
+                </p>
+              )}
             </div>
           ))}
 
@@ -246,10 +285,11 @@ export default function TaxParameters() {
                   .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
                   .toLowerCase() // Convert the entire string to lowercase
                   .replace(/\b\w/g, (char) => char.toUpperCase())}{" "}
-                {/*Capitalize the first letter of each word*/}
               </label>
               <input
-                className="border p-2 w-full text-xs"
+                className={`border p-2 w-full text-xs ${
+                  errors[`nationalInsurance.${key}`] ? "border-red-500" : ""
+                }`}
                 type="number"
                 placeholder={key
                   .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
@@ -266,6 +306,11 @@ export default function TaxParameters() {
                   })
                 }
               />
+              {errors[`nationalInsurance.${key}`] && (
+                <p className="text-red-500 text-xs">
+                  {errors[`nationalInsurance.${key}`]}
+                </p>
+              )}
             </div>
           ))}
         </div>
