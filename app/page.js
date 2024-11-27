@@ -193,16 +193,23 @@ export default function TaxParameters() {
 
   return (
     <div className="p-2 min-h-screen">
-      <Link
-        href="\calculate"
-        className="bg-slate-500 mt-3 mb-3 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
-      >
-        <span className="text-lg">Calculate Tax</span>
-        <span className="text-2xl"> ➡️</span>
-      </Link>
-      <div className="flex items-center space-x-2">
+      {/* Wrapper for Calculate Tax button */}
+      <div className="flex justify-center mt-5">
+        <Link
+          href="\calculate"
+          className="bg-slate-500 mt-3 mb-3 px-6 py-3 text-white rounded-md flex items-center justify-center gap-2 w-fit"
+        >
+          <span className="text-lg">Calculate Tax</span>
+          <span className="text-2xl"> ➡️</span>
+        </Link>
+      </div>
+
+      {/* Wrapper for Title Section */}
+      <div className="flex flex-col items-center space-y-2 mt-3">
         {/* Title Section */}
-        <h1 className="text-lg font-bold">Manage Tax & NI Parameters</h1>
+        <h1 className="text-lg font-bold text-center">
+          Manage Tax & NI Parameters
+        </h1>
 
         {/* Info Icon with Tooltip */}
         <div className="relative group inline-block">
@@ -327,75 +334,81 @@ export default function TaxParameters() {
       </div>
 
       {/* Table Section */}
-      <table className="table-auto w-full">
-        <thead className="text-left text-sm">
-          <tr>
-            <th className="border px-4 py-2">Tax Year</th>
-            <th className="border px-4 py-2">Income Tax</th>
-            <th className="border px-4 py-2">National Insurance</th>
-            <th className="border px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="text-xs">
-          {params
-            .sort((a, b) => a.year - b.year) // Sort the parameters by year
-            .map((p) => (
-              <tr key={p._id}>
-                <td className="border px-4 py-2">
-                  {p.year} / {+p.year + 1}
-                </td>
-                <td className="border px-4 py-2">
-                  <ul>
-                    {Object.entries(p.incomeTax).map(([key, value]) => (
-                      <li className="mb-3" key={key}>
-                        <strong>
-                          {key
-                            .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
-                            .toLowerCase() // Convert the entire string to lowercase
-                            .replace(/\b\w/g, (char) => char.toUpperCase())}
-                          :
-                        </strong>{" "}
-                        {value}
-                      </li>
-                    ))}
-                  </ul>
-                </td>
-                <td className="border px-4 py-2">
-                  <ul>
-                    {Object.entries(p.nationalInsurance).map(([key, value]) => (
-                      <li className="mb-3" key={key}>
-                        <strong>
-                          {key
-                            .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
-                            .toLowerCase() // Convert the entire string to lowercase
-                            .replace(/\b\w/g, (char) => char.toUpperCase())}
-                          :
-                        </strong>{" "}
-                        {value}
-                      </li>
-                    ))}
-                  </ul>
-                </td>
-                <td className="border px-4 py-2">
-                  <div className="flex flex-col">
-                    <button
-                      className="text-left mb-10"
-                      onClick={() => setNewParam(p)}
-                    >
-                      ✏️ Edit
-                    </button>
-                    <button
-                      className="text-left"
-                      onClick={() => handleDelete(p._id)}
-                    >
-                      🗑️ Trash
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto max-h-96">
+        <table className="table-auto w-full border-collapse">
+          <thead className="text-left text-sm sticky top-0 bg-white z-10">
+            <tr>
+              <th className="border px-4 py-2 bg-gray-100">Tax Year</th>
+              <th className="border px-4 py-2 bg-gray-100">Income Tax</th>
+              <th className="border px-4 py-2 bg-gray-100">
+                National Insurance
+              </th>
+              <th className="border px-4 py-2 bg-gray-100">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="text-xs">
+            {params
+              .sort((a, b) => a.year - b.year) // Sort the parameters by year
+              .map((p) => (
+                <tr key={p._id} className="even:bg-gray-100 odd:bg-white">
+                  <td className="border px-4 py-2">
+                    {p.year} / {+p.year + 1}
+                  </td>
+                  <td className="border px-4 py-2">
+                    <ul>
+                      {Object.entries(p.incomeTax).map(([key, value]) => (
+                        <li className="mb-3" key={key}>
+                          <strong>
+                            {key
+                              .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
+                              .toLowerCase() // Convert the entire string to lowercase
+                              .replace(/\b\w/g, (char) => char.toUpperCase())}
+                            :
+                          </strong>{" "}
+                          {value}
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td className="border px-4 py-2">
+                    <ul>
+                      {Object.entries(p.nationalInsurance).map(
+                        ([key, value]) => (
+                          <li className="mb-3" key={key}>
+                            <strong>
+                              {key
+                                .replace(/([A-Z])/g, " $1") // Add spaces before uppercase letters
+                                .toLowerCase() // Convert the entire string to lowercase
+                                .replace(/\b\w/g, (char) => char.toUpperCase())}
+                              :
+                            </strong>{" "}
+                            {value}
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </td>
+                  <td className="border px-4 py-2">
+                    <div className="flex flex-col">
+                      <button
+                        className="text-left mb-10"
+                        onClick={() => setNewParam(p)}
+                      >
+                        ✏️ Edit
+                      </button>
+                      <button
+                        className="text-left"
+                        onClick={() => handleDelete(p._id)}
+                      >
+                        🗑️ Trash
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

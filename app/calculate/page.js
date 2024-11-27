@@ -58,15 +58,18 @@ export default function Calculator() {
     <div className="pt-4 px-4 min-h-screen bg-gray-100">
       {/* Header */}
       <div className="mb-4">
+        <div className="flex justify-center mt-5">
+          <Link
+            href="/"
+            className="mt-3 bg-slate-500 px-4 py-2 text-white rounded-md flex items-center justify-center gap-2 w-fit"
+          >
+            <span className="text-2xl">⬅️ </span>
+            <span className="text-lg">Tax & NI Parameters</span>
+          </Link>
+        </div>
+
         <Link
-          href="/"
-          className="mt-3 bg-slate-500 px-4 py-2 text-white rounded-md flex items-center justify-center gap-2 w-fit"
-        >
-          <span className="text-lg">Tax & NI Parameters</span>
-          <span className="text-2xl"> ➡️</span>
-        </Link>
-        <Link
-          className="mt-2 underline underline-offset-4"
+          className="mt-2 underline underline-offset-4 flex justify-center"
           href="/complextaxtabs"
         >
           Tabs
@@ -75,8 +78,12 @@ export default function Calculator() {
 
       {/* Calculator Section */}
       <div className="bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-lg font-bold">Basic Tax & NI Calculator</h1>
-        <p className="text-xs mb-4">Excludes Scotland & Special Allowances</p>
+        <h1 className="text-lg font-bold flex justify-center">
+          Basic Tax & NI Calculator
+        </h1>
+        <p className="text-xs mb-4 flex justify-center">
+          Excludes Scotland & Special Allowances
+        </p>
 
         {/* Year Dropdown */}
         <div className="flex flex-wrap gap-2 mb-4">
